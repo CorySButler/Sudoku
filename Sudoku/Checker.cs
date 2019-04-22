@@ -8,14 +8,14 @@ namespace Sudoku
 {
     public static class Checker
     {
-        public static bool IsValidGrid(List<List<byte>> grid)
+        public static bool IsValidGrid(Grid grid)
         {
             return AreAllBlocksValid(grid) && AreAllColumnsValid(grid) && AreAllRowsValid(grid);
         }
 
         private static bool IsValidCell(byte cell) => cell > 0 && cell < 10;
 
-        private static bool AreAllBlocksValid(List<List<byte>> grid)
+        private static bool AreAllBlocksValid(Grid grid)
         {
             var blockWidth = 3;
             var blockHeight = 3;
@@ -32,7 +32,7 @@ namespace Sudoku
 
                         for (var y = 0; y < blockHeight; y++)
                         {
-                            var cell = grid[x + blockX * blockWidth][y + blockY * blockHeight];
+                            var cell = grid.Cells[x + blockX * blockWidth][y + blockY * blockHeight].Value;
                             if (!IsValidCell(cell) || foundValues.Any(v => v == cell)) return false;
                             foundValues.Add(cell);
                         }
@@ -42,15 +42,15 @@ namespace Sudoku
             return true;
         }
 
-        private static bool AreAllColumnsValid(List<List<byte>> grid)
+        private static bool AreAllColumnsValid(Grid grid)
         {
-            for (var x = 0; x < grid.Count; x++)
+            for (var x = 0; x < grid.Cells.Count; x++)
             {
                 var foundValues = new List<byte>();
 
-                for (var y = 0; y < grid[x].Count; y++)
+                for (var y = 0; y < grid.Cells[x].Count; y++)
                 {
-                    var cell = grid[y][x];
+                    var cell = grid.Cells[y][x].Value;
                     if (!IsValidCell(cell) || foundValues.Any(v => v == cell)) return false;
                     foundValues.Add(cell);
                 }
@@ -58,15 +58,15 @@ namespace Sudoku
             return true;
         }
 
-        private static bool AreAllRowsValid(List<List<byte>> grid)
+        private static bool AreAllRowsValid(Grid grid)
         {
-            for (var x = 0; x < grid.Count; x++)
+            for (var x = 0; x < grid.Cells.Count; x++)
             {
                 var foundValues = new List<byte>();
 
-                for (var y = 0; y < grid[x].Count; y++)
+                for (var y = 0; y < grid.Cells[x].Count; y++)
                 {
-                    var cell = grid[x][y];
+                    var cell = grid.Cells[x][y].Value;
                     if (!IsValidCell(cell) || foundValues.Any(v => v == cell)) return false;
                     foundValues.Add(cell);
                 }
